@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 #Liberal Ontario
 #need to add data storing 
 
+f = open("ontarioLiberalTest.txt","w+")
 
 url = 'https://ontarioliberal.ca/events/'
 
@@ -18,12 +19,24 @@ for divTags in eventList:
     divDesc = divTags.descendants
     for eventWrapper in divDesc:
         if(eventWrapper.name=='p' and eventWrapper.get('class',' ')==['entry-date']):
-            print("Date: " + eventWrapper.text)
+            f.write("Date: " + eventWrapper.text+"\n")
         elif(eventWrapper.name=='h2'):
-            print("Name: "+ eventWrapper.text)
+            f.write("Name: "+ eventWrapper.text+"\n")
         elif(eventWrapper.name=='p' and eventWrapper.get('class',' ')==['time']):
-            print("Time: " + eventWrapper.text)
+            f.write("Time: " + eventWrapper.text+"\n")
         elif(eventWrapper.name=='p' and eventWrapper.get('class',' ')==['excerpt']):
-            print("Description: " + eventWrapper.text)
-        elif(eventWrapper.name=='p' and eventWrapper.get('class',' ')==['type ticketed']):
-            print("isTicketed " + eventWrapper.text)
+            f.write("Description: " + eventWrapper.text+"\n\n\n\n")
+        #elif(eventWrapper.name=='p' and eventWrapper.get('class',' ')==['type ticketed']):
+            #f.write("isTicketed " + eventWrapper.text+"\n")
+        elif(eventWrapper.name=='a' ):
+            addressURL = eventWrapper['href']
+            f.write(eventWrapper['href']+"\n")
+            
+            
+            newResponse = requests.get(addressURL)
+            newSoup = BeautifulSoup(newResponse.text,"html.parser")
+            descendants = newSoup.descendants
+            for tags in descendants:
+                if(tags.name=='p' and tags.get('class',' ')==['location']):
+                    f.write(tags.text+"\n")
+            
