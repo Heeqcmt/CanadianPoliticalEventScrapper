@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 #Liberal Ontario
 #need to add data storing 
 
-f = open("ontarioLiberalTest.txt","w+")
+f = open("LibON.txt","w+")
 
 url = 'https://ontarioliberal.ca/events/'
 
