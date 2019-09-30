@@ -2,7 +2,7 @@ import requests
 import urllib.request
 import time
 from bs4 import BeautifulSoup
-#Liberal Ontario
+#ConservativesOntario
 #need to add data storing 
 
 f = open("ConON.txt","w+")
