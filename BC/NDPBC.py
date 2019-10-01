@@ -20,6 +20,8 @@ for i in range(numOfEvent):
     f.write("Location: "+data["markers"][i]["location"]+"\n")
     f.write("Address: "+data["markers"][i]["address"]+"\n")
     f.write("Postal Code: "+data["markers"][i]["postal_code"]+"\n")
-    f.write("Description: "+data["markers"][i]["description"]+"\n\n\n")
+    f.write("Description: "+data["markers"][i]["description"]+"\n")
+    f.write("Link: "+data["markers"][i]["link"]+"\n\n\n")
+    
 
       
