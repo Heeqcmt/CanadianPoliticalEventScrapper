@@ -18,13 +18,13 @@ for event in eventList:
     eventUrl = "https://www.pcmanitoba.com"+event.find("a")["href"]
     eventResp = requests.get(eventUrl)
     eventSoup = BeautifulSoup(eventResp.text,"html.parser")
-    print("Link: "+eventUrl+"\n")
-    print("Title: "+eventSoup.find(id="headline").h2.text+"\n")
+    f.write("Link: "+eventUrl+"\n")
+    f.write("Title: "+eventSoup.find(id="headline").h2.text+"\n")
 
     eventDetail = eventSoup.find_all(class_="event-detail")
     
     for detail in eventDetail:
         if(detail.h6.text == "WHEN"):  
-            print("Date: "+detail.div.text+"\n")
+            f.write("Date: "+detail.div.text+"\n")
         elif(detail.h6.text == "WHERE"):
-            print("Location: "+detail.div.text+"\n\n\n\n" )
+            f.write("Location: "+detail.div.text+"\n\n\n\n" )
