@@ -6,19 +6,20 @@ from bs4 import BeautifulSoup
 #need to add data storing 
 
 f = open("NDPBC.txt","w+")
-url = 'https://www.bcndp.ca/events'
+url = 'https://www.bcndp.ca/events?action_handler=block--campaign-events-search&action=block--campaign-events-search--search-all&json=1'
 
 response = requests.get(url)
 
-soup = BeautifulSoup(response.text,"html.parser")
+data = response.json()
 
-eventList = soup.find_all('div','event')
-        
-for event in eventList:
-    f.write("Date: "+ event.find('div',class_='date').text+"\n")
-    f.write("Name: "+event.find('a').text +"\n")
-    f.write("Link: "+ event.find('a')['href']+"\n")
-    f.write("Description: "+ event.find('div',class_='desc').text+"\n\n\n\n\n\n")
-      
+numOfEvent = len(data["markers"])
+
+for i in range(numOfEvent):
+    f.write("Title: "+data["markers"][i]["title"]+"\n")
+    f.write("Date: "+data["markers"][i]["date"]+"\n")
+    f.write("Location: "+data["markers"][i]["location"]+"\n")
+    f.write("Address: "+data["markers"][i]["address"]+"\n")
+    f.write("Postal Code: "+data["markers"][i]["postal_code"]+"\n")
+    f.write("Description: "+data["markers"][i]["description"]+"\n\n\n")
 
       
