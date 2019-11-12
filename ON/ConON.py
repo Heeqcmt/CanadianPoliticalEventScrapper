@@ -2,10 +2,24 @@ import requests
 import urllib.request
 import time
 from bs4 import BeautifulSoup
+import mysql.connector
 #ConservativesOntario
 #need to add data storing 
 
-f = open("ConON.txt","w+")
+
+mydb = mysql.connector.connect(
+    host="mymysql.senecacollege.ca",
+    user = "prj666_193a03",
+    passwd= "adQZ@8552",
+    database="prj666_193a03"   
+)
+
+mycursor = mydb.cursor()
+eventDic={}
+sqlInsert =  "INSERT INTO OFFICIALEVENT (title,province,location,date,party,link) VALUES ( %s, %s, %s, %s, %s,%s)"
+
+
+
 url = 'https://www.ontariopc.ca/events'
 
 response = requests.get(url)
@@ -18,12 +32,17 @@ for event in eventList:
     tagList = event.descendants
     for tag in tagList:
         if(tag.name == 'h4'):
-            f.write("name: "+tag.text+"\n")
+            eventDic["title"] = tag.text
         elif(tag.name == 'a' and not tag.has_attr('class')):
-            f.write("Location: "+tag.text+"\n")
+            eventDic["location"]=tag.text
         elif(tag.name == 'p'):
-            f.write("Time: " + tag.text +"\n")
+            eventDic["date"]= tag.text 
         elif(tag.name == 'a' and tag.has_attr('class')):
-            f.write("Registration: https://www.ontariopc.ca/" + tag['href'] + "\n\n\n\n")
+            eventDic["link"]=  "https://www.ontariopc.ca/" + tag['href'] 
+    val = (eventDic["title"],"ON",eventDic["location"],eventDic["date"],"Conservative",eventDic["link"])
+    mycursor.execute(sqlInsert,val)
+    mydb.commit()
+    print(mycursor.rowcount,"record inserted")
+
 
       

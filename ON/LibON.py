@@ -2,10 +2,23 @@ import requests
 import urllib.request
 import time
 from bs4 import BeautifulSoup
+import mysql.connector
 #Liberal Ontario
 #need to add data storing 
 
-f = open("LibON.txt","w+")
+mydb = mysql.connector.connect(
+    host="mymysql.senecacollege.ca",
+    user = "prj666_193a03",
+    passwd= "adQZ@8552",
+    database="prj666_193a03"   
+)
+
+mycursor = mydb.cursor()
+eventDic={}
+sqlInsert =  "INSERT INTO OFFICIALEVENT (title,description,address,province,location,date,party,link) VALUES ( %s,%s,%s, %s, %s, %s, %s,%s)"
+
+
+
 
 url = 'https://ontarioliberal.ca/events/'
 
@@ -13,30 +26,26 @@ response = requests.get(url)
 
 soup = BeautifulSoup(response.text,"html.parser")
 
-eventList = soup.find_all(id='events-listing')
+eventList = soup.find_all("div","cell large-4 medium-6 events-listing-single")
 
-for divTags in eventList:   
-    divDesc = divTags.descendants
-    for eventWrapper in divDesc:
-        if(eventWrapper.name=='p' and eventWrapper.get('class',' ')==['entry-date']):
-            f.write("Date: " + eventWrapper.text+"\n")
-        elif(eventWrapper.name=='h2'):
-            f.write("Name: "+ eventWrapper.text+"\n")
-        elif(eventWrapper.name=='p' and eventWrapper.get('class',' ')==['time']):
-            f.write("Time: " + eventWrapper.text+"\n")
-        elif(eventWrapper.name=='p' and eventWrapper.get('class',' ')==['excerpt']):
-            f.write("Description: " + eventWrapper.text+"\n\n\n\n")
-        #elif(eventWrapper.name=='p' and eventWrapper.get('class',' ')==['type ticketed']):
-            #f.write("isTicketed " + eventWrapper.text+"\n")
-        elif(eventWrapper.name=='a' ):
-            addressURL = eventWrapper['href']
-            f.write(eventWrapper['href']+"\n")
-            
-            
-            newResponse = requests.get(addressURL)
-            newSoup = BeautifulSoup(newResponse.text,"html.parser")
-            descendants = newSoup.descendants
-            for tags in descendants:
-                if(tags.name=='p' and tags.get('class',' ')==['location']):
-                    f.write(tags.text+"\n")
+for events in eventList:
+    detailLink = events.find("a")["href"]
+    detailReponse = requests.get(detailLink)
+    newSoup = BeautifulSoup(detailReponse.text,"html.parser")
+    address = newSoup.find("p","location")
+    location = address.span.extract()
+    eventDic["link"]=(events.find("a")["href"])
+    eventDic["date"]=(events.find("p","entry-date").text+" "+events.find("p","time").text)
+    eventDic["title"]=(events.find("h2").text)
+    eventDic["desc"]=(events.find("p","excerpt").text)
+    eventDic['location']=location.text
+    eventDic["address"] = address.text
+    val = (eventDic["title"],eventDic["desc"],eventDic["address"],"ON",eventDic["location"],eventDic["date"],"Liberal",eventDic["link"])
+    mycursor.execute(sqlInsert,val)
+    mydb.commit()
+    print(mycursor.rowcount,"record inserted")
+    
+
+
+    
             

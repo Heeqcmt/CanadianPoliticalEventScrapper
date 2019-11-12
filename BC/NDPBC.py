@@ -9,10 +9,10 @@ import mysql.connector
 
 
 mydb = mysql.connector.connect(
-    host="localhost",
-    user = "root",
-    passwd= "XYM88uosjg",
-    database="ndpbc"
+    host="mymysql.senecacollege.ca",
+    user = "prj666_193a03",
+    passwd= "adQZ@8552",
+    database="prj666_193a03"
     
     
 )
@@ -29,7 +29,7 @@ numOfEvent = len(data["markers"])
 
 eventDic ={}
 
-sqlInsert = "INSERT INTO ndp (title,description,address,province,location,date,party,link) VALUES (%s, %s, %s, %s, %s, %s, %s,%s)"
+sqlInsert = "INSERT INTO OFFICIALEVENT (title,description,address,province,location,date,party,link) VALUES (%s, %s, %s, %s, %s, %s, %s,%s)"
 
 for i in range(numOfEvent):
     eventDic["title"]=data["markers"][i]["title"]
