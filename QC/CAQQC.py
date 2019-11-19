@@ -2,11 +2,20 @@ import requests
 import urllib.request
 import time
 from bs4 import BeautifulSoup
-#Con MN
-#need to add data storing 
-#possible fix for format is here
+import mysql.connector
 
-f = open("CAQQC.txt","w+")
+
+
+mydb = mysql.connector.connect(
+    host="mymysql.senecacollege.ca",
+    user = "prj666_193a03",
+    passwd= "adQZ@8552",
+    database="prj666_193a03"   
+)
+mycursor = mydb.cursor()
+eventDic={}
+sqlInsert =  "INSERT INTO OFFICIALEVENT (title,province,location,date,party,link) VALUES ( %s, %s, %s, %s, %s,%s)"
+
 url = 'https://coalitionavenirquebec.org/fr/activites'
 
 response = requests.get(url)
@@ -20,18 +29,22 @@ for tag in aTags:
         eventURL = tag['href']
         eventResp = requests.get(eventURL)
         eventSoup = BeautifulSoup(eventResp.text,"html.parser")
-        f.write("Link: "+ eventURL+"\n")
-        f.write("Title: "+ eventSoup.h1.text+"\n")
+        eventDic["link"]=eventURL
+        eventDic["title"]=eventSoup.h1.text
         data = eventSoup.find_all('span')
         for span in data:
             if(span.i):
                 if(span.i["class"]==['fa','fa-calendar']):
-                    f.write("Date: "+span.text+"\n")
+                    eventDic["date"]=span.text
                 elif(span.i["class"]==['fa','fa-clock-o']):
-                    f.write("Time: "+span.text+"\n")
-
+                    eventDic["date"] = eventDic["date"]+span.text
+        eventDic["desc"]=eventSoup.find("div","col-lg-12 wysiwyg-container").text
         address = eventSoup.find('h3',class_="w-subtitle spacing--medium",text="Adresse")  
         addParent = address.parent
-        f.write("location: "+addParent.strong.text+"\n")            
+        eventDic["location"]=addParent.strong.text
+        val = (eventDic["title"],"QC",eventDic["location"],eventDic["date"],"CAQ",eventDic["link"])
+        mycursor.execute(sqlInsert,val)
+        mydb.commit()
+        print(mycursor.rowcount,"record inserted")
                 
         

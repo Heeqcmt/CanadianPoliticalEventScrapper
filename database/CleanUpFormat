@@ -1,0 +1,2 @@
+update OFFICIALEVENT set OFFICIALEVENT.date = TRIM(Replace(Replace(Replace(OFFICIALEVENT.date,'\t',''),'\n',''),'\r','')) WHERE ID > 0;
+select * from OFFICIALEVENT;
