@@ -24,6 +24,8 @@ respond = requests.get(url)
 soup = BeautifulSoup(respond.text,"html.parser")
 
 eventTitle = soup.find("div","crm-container")
+
+if(eventTitle.find("a")["href"]){
 link = eventTitle.find("a")["href"]
 eventDic["link"]=link
 eventDic["title"]=eventTitle.find("a").text
@@ -41,3 +43,7 @@ mydb.commit()
 print(mycursor.rowcount,"record inserted")
 
 
+}else
+{
+    print("ConNL has no events")
+}

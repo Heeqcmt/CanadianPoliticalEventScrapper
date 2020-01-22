@@ -1,5 +1,5 @@
 import mysql.connector
-import DBInfo.Information as DB
+import CANADIANPOLITICALEVENTSCRAPPER.DBInfo.Information as DB
 
 
 
