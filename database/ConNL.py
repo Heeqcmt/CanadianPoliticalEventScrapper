@@ -3,15 +3,18 @@ import urllib.request
 import time
 from bs4 import BeautifulSoup
 import mysql.connector
-#need to add looping for when there is more events to consider
+import DBInfo.Information as DB
+
+
 
 mydb = mysql.connector.connect(
-    host="mymysql.senecacollege.ca",
-    user = "prj666_193a03",
-    passwd= "adQZ@8552",
-    database="prj666_193a03"   
+    host = DB.host,
+    user = DB.user,
+    passwd= DB.passwd,
+    database=DB.database
+    
+    
 )
-
 mycursor = mydb.cursor()
 eventDic={}
 sqlInsert =  "INSERT INTO OFFICIALEVENT (title,description,province,location,date,party,link) VALUES ( %s,%s, %s, %s, %s, %s,%s)"

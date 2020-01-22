@@ -5,14 +5,18 @@ from bs4 import BeautifulSoup
 import mysql.connector
 #Liberal Ontario
 #need to add data storing 
+import DBInfo.Information as DB
+
+
 
 mydb = mysql.connector.connect(
-    host="mymysql.senecacollege.ca",
-    user = "prj666_193a03",
-    passwd= "adQZ@8552",
-    database="prj666_193a03"   
+    host = DB.host,
+    user = DB.user,
+    passwd= DB.passwd,
+    database=DB.database
+    
+    
 )
-
 mycursor = mydb.cursor()
 eventDic={}
 sqlInsert =  "INSERT INTO OFFICIALEVENT (title,description,address,province,location,date,party,link) VALUES ( %s,%s,%s, %s, %s, %s, %s,%s)"

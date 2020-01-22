@@ -3,17 +3,17 @@ import urllib.request
 import time
 from bs4 import BeautifulSoup
 import mysql.connector
-
-#Con MN
-#need to add data storing 
+import DBInfo.Information as DB
 
 
-#connection to database and data structure
+
 mydb = mysql.connector.connect(
-    host="mymysql.senecacollege.ca",
-    user = "prj666_193a03",
-    passwd= "adQZ@8552",
-    database="prj666_193a03"   
+    host = DB.host,
+    user = DB.user,
+    passwd= DB.passwd,
+    database=DB.database
+    
+    
 )
 
 mycursor = mydb.cursor()

@@ -4,16 +4,18 @@ import time
 from bs4 import BeautifulSoup
 import mysql.connector
 #UCP AB
+import DBInfo.Information as DB
+
+
 
 mydb = mysql.connector.connect(
-    host="mymysql.senecacollege.ca",
-    user = "prj666_193a03",
-    passwd= "adQZ@8552",
-    database="prj666_193a03"
+    host = DB.host,
+    user = DB.user,
+    passwd= DB.passwd,
+    database=DB.database
     
     
 )
-
 mycursor = mydb.cursor()
 
 url = 'https://www.unitedconservative.ca/'

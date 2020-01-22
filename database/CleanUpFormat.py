@@ -1,10 +1,15 @@
 import mysql.connector
+import DBInfo.Information as DB
+
+
 
 mydb = mysql.connector.connect(
-    host="mymysql.senecacollege.ca",
-    user = "prj666_193a03",
-    passwd= "adQZ@8552",
-    database="prj666_193a03"   
+    host = DB.host,
+    user = DB.user,
+    passwd= DB.passwd,
+    database=DB.database
+    
+    
 )
 mycursor = mydb.cursor()
 mycursor.execute("update OFFICIALEVENT set OFFICIALEVENT.date = TRIM(Replace(Replace(Replace(OFFICIALEVENT.date,'\t',''),'\n',''),'\r','')) WHERE ID > 0;")
