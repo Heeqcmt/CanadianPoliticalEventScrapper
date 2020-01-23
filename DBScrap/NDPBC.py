@@ -6,6 +6,9 @@ import json
 import mysql.connector
 #NDP BC
 #need to add data storing 
+import sys
+from os import path
+sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
 import DBInfo.Information as DB
 
 
@@ -18,7 +21,7 @@ mydb = mysql.connector.connect(
     
     
 )
-)
+
 
 mycursor = mydb.cursor()
 

@@ -1,5 +1,8 @@
 import mysql.connector
-import CANADIANPOLITICALEVENTSCRAPPER.DBInfo.Information as DB
+import sys
+from os import path
+sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+import DBInfo.Information as DB
 
 
 

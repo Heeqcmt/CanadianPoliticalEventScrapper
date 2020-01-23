@@ -5,6 +5,9 @@ from bs4 import BeautifulSoup
 import mysql.connector
 #Liberal Ontario
 #need to add data storing 
+import sys
+from os import path
+sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
 import DBInfo.Information as DB
 
 
